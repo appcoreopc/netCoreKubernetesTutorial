@@ -1,0 +1,25 @@
+apiVersion: v1
+kind: ReplicationController
+metadata:
+  name: connectcd
+  labels:
+    app: connectcd
+spec:
+  replicas: 2
+  selector:
+    app: connectcd
+    deployment: initial
+  template:
+    metadata:
+      labels:
+        app: connectcd
+        deployment: initial
+    spec:
+      containers:
+      - name: myapp
+        image: 469859d87f7e
+        ports:
+        - containerPort: 5050
+      imagePullPolicy: Never
+      imagePullSecrets:
+        - name: myregistry.com-registry-key
