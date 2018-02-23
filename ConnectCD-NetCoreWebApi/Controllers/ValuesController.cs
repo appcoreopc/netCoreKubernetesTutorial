@@ -15,7 +15,9 @@ namespace ConnectCD_NetCoreWebApi.Controllers
         {
             return new string[] { "value1", "value2" };
         }
-
+        
+        
+        [Produces("application/json")]
         // GET api/values/5
         [HttpGet("{id}")]
         public string Get(int id)
@@ -24,6 +26,19 @@ namespace ConnectCD_NetCoreWebApi.Controllers
         }
 
         // POST api/values
+        /// <summary>      
+        ///   
+        /// </summary>
+        /// 
+        /// <remarks>
+        /// 
+        /// Creates a new value for service.
+        /// </remarks>
+        /// <param name="value"></param>
+        /// <response code="201">Returns the newly-created item</response>
+        /// <response code="400">If the item is null</response>          
+        [ProducesResponseType(typeof(object), 201)]
+        [ProducesResponseType(typeof(object), 400)]
         [HttpPost]
         public void Post([FromBody]string value)
         {
@@ -33,7 +48,7 @@ namespace ConnectCD_NetCoreWebApi.Controllers
         [HttpPut("{id}")]
         public void Put(int id, [FromBody]string value)
         {
-        }
+        }               
 
         // DELETE api/values/5
         [HttpDelete("{id}")]

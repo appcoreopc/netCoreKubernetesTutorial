@@ -29,6 +29,44 @@
 #NAME             TYPE       CLUSTER-IP      EXTERNAL-IP   PORT(S)          AGE
 #connectcd-http   NodePort   10.103.83.222   <none>        5050:32206/TCP   8m
 
+# Scaling it 
+# kubectl scale deployment/connectcd --replicas=4
+
+
+# Working on a real cluster - assuming that your config are in connect_config.txt file. 
+# kubectl --kubeconfig connect_config.txt expose deployment/connectcd 
+# --type="LoadBalancer" --port=5050 --name=connectcd-http
+
+# you might get something like this. 
+
+# apiVersion: v1
+# kind: Service
+# metadata:
+#   creationTimestamp: 2018-02-21T23:53:19Z
+#   labels:
+#     run: connectcd
+#   name: connectcd-http
+#   namespace: default
+#   resourceVersion: "13844785"
+#   selfLink: /api/v1/namespaces/default/services/connectcd-http
+#   uid: 6451ebb2-1762-11e8-9867-02432983db5c
+# spec:
+#   clusterIP: 100.68.35.189
+#   externalTrafficPolicy: Cluster
+#   ports:
+#   - nodePort: 32426
+#     port: 5050
+#     protocol: TCP
+#     targetPort: 5050
+#   selector:
+#     run: connectcd
+#   sessionAffinity: None
+#   type: LoadBalancer
+# status:
+#   loadBalancer:
+#     ingress:
+#     - hostname: a6451ebb2176211e8986702432983db5-1541704422.us-east-1.elb.amazonaws.com
+
 # Other useful command 
 # kubectl delete pods --all 
 
@@ -39,6 +77,13 @@
 
 #Kubernetes debugging 
 #kubectl exec -it connectcd-545c87f8d8-k8hgz /bin/bash
+
+
+# AWS support 
+# docker build -t dotnetapp-prod .
+# docker tag dotnetapp-prod 312611170176.dkr.ecr.ap-southeast-2.amazonaws.com/jeremy:dotnetapp-prod
+# docker push 312611170176.dkr.ecr.ap-southeast-2.amazonaws.com/jeremy:dotnetapp-prod
+
 
 FROM microsoft/dotnet:2.0-sdk AS build-env
 WORKDIR /app
