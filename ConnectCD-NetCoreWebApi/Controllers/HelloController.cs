@@ -1,16 +1,28 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using ConnectCD.NetCoreWebApi.Configuration;
+using ConnectCD.NetCoreWebApi.LogService;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
+using System;
 
 namespace ConnectCD_NetCoreWebApi.Controllers
 {
     public class HelloController : Controller
     {
+        private AppConfig _settings;
 
-
+        public HelloController(IOptions<AppConfig> appSettings)
+        {
+            _settings = appSettings?.Value;
+        }
+        
         // GET hello/index
-        [HttpGet]
+        [HttpGet("{id}")]
         public IActionResult Index()
         {
-            return Ok("Hello World!");
+            var logger = new FluentdLogger(_settings.Settings);
+            var messageToUsers = "Hello World! " + DateTime.Now.ToShortTimeString();
+            logger.Write(messageToUsers);
+            return Ok(messageToUsers);
         }
       
         // PUT api/values/5

@@ -9,21 +9,38 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Swashbuckle.AspNetCore.Swagger;
+using ConnectCD.NetCoreWebApi.Configuration;
 
 namespace ConnectCD_NetCoreWebApi
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        //public Startup(IConfiguration configuration)
+        //{
+        //    Configuration = configuration;
+        //}
+        
+        public Startup(IHostingEnvironment env)
         {
-            Configuration = configuration;
+            var builder = new ConfigurationBuilder()
+                .SetBasePath(env.ContentRootPath)
+                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+                .AddEnvironmentVariables();
+
+            Configuration = builder.Build();
         }
+
 
         public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+
+            // Add configuration services
+            services.Configure<AppConfig>(Configuration);
+
+
             services.AddMvc();
 
             services.AddSwaggerGen(c =>
@@ -51,15 +68,13 @@ namespace ConnectCD_NetCoreWebApi
 
             app.UseMvc();
 
-
             app.UseCors(option => option.WithOrigins("*").AllowAnyMethod().AllowAnyHeader());
 
             app.UseMvc(routes =>
             {
-                routes.MapRoute("default", "{controller}/{action}/{id?}");
+                routes.MapRoute(name: "default", template: "{controller}/{action=Index}/{id?}");
             });
-
-
+            
         }
     }
 }

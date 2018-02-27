@@ -15,11 +15,18 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.0" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.0.0" />
+    <PackageReference Include="NLog" Version="2.1.0" />
+    <PackageReference Include="NLog.Targets.Fluentd" Version="1.0.4" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="2.0.0" />
+    <PackageReference Include="System.Configuration.ConfigurationManager" Version="4.4.1" />
   </ItemGroup>
 
   <ItemGroup>
     <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="2.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="nlog.config" />
   </ItemGroup>
 
 </Project>
