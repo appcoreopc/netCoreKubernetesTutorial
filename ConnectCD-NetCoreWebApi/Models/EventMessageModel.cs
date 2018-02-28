@@ -7,8 +7,15 @@ namespace ConnectCD.NetCoreWebApi.Models
 {
     public class EventMessageModel
     {
-        
+        /// <summary>
+        ///  Authentication 
+        /// </summary>
+        public string Challenge { get; set; }
+
         public string Token { get; set; }
+        
+
+        ///public string Token { get; set; }
 
         public string Team_Id { get; set; }
 

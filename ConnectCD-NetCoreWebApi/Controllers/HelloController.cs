@@ -11,7 +11,7 @@ namespace ConnectCD_NetCoreWebApi.Controllers
     {
         private AppConfig _settings;
         private readonly ILogger<HelloController> _logger;
-
+        private const string HelloWorldMessage = "Hello World. V2";
         public HelloController(IOptions<AppConfig> appSettings, ILogger<HelloController> logger) 
         {
             _settings = appSettings?.Value;
@@ -22,7 +22,7 @@ namespace ConnectCD_NetCoreWebApi.Controllers
         [HttpGet("{id}")]
         public IActionResult Index()
         {                      
-            var messageToUsers = "Hello World! " + DateTime.Now.ToShortTimeString();
+            var messageToUsers = HelloWorldMessage + DateTime.Now.ToShortTimeString();
             _logger.LogInformation(messageToUsers);            
             return Ok(messageToUsers);
         }

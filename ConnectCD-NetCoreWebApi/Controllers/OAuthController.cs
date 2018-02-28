@@ -8,6 +8,7 @@ using ConnectCD.NetCoreWebApi.Configuration;
 using ConnectCD_NetCoreWebApi.Controllers;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using ConnectCD.NetCoreWebApi.WordRank;
 
 namespace ConnectCD.NetCoreWebApi.Controllers
 {
@@ -21,26 +22,19 @@ namespace ConnectCD.NetCoreWebApi.Controllers
         {
             _settings = appSettings?.Value;
             _logger = logger;
-        }
-        
-        //[HttpPost]
-        //public IActionResult Index([FromBody] ChallengeModel model)
-        //{
-        //    _logger.LogInformation("OAuthController post trigged!");
-        //    _logger.LogInformation(model?.Challenge);
-        //    _logger.LogInformation(model?.Token);
-
-        //    if (model != null)
-        //    {
-        //        return Ok(model.Challenge);
-        //    }
-
-        //    return Ok();
-        //}
+        }           
 
         [HttpPost]
-        public IActionResult Index([FromBody] EventMessageModel model)
+        public async Task<IActionResult> Index([FromBody] EventMessageModel model)
         {
+            // Return challenge from slack if this is a challenge request 
+            if (model?.Challenge != null)
+            {
+                return Ok(model.Challenge);               
+            }
+
+            // Otherwise do word count //
+            await new WordRanker(new WordDataHandler(), _logger).Collect(model?.Event.Text);
 
             _logger.LogInformation("OAuthController post trigged!");
             _logger.LogInformation($" Channel: {model?.Event?.Channel}");
@@ -50,11 +44,11 @@ namespace ConnectCD.NetCoreWebApi.Controllers
             _logger.LogInformation(model?.Type);
             _logger.LogInformation($"Text message: {model?.Event?.Text}");
 
-                      
+            // Return OK to acknowledge
+            // message received //
+
             return Ok();
         }
-
-
 
     }
 }
