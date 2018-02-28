@@ -8,6 +8,5 @@ namespace ConnectCD.NetCoreWebApi.Configuration
     public class Settings
     {        
         public string FluentLoggerServerIp { get; set; }
-
     }
 }
