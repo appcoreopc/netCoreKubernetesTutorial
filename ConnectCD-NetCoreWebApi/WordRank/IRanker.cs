@@ -9,7 +9,7 @@ namespace ConnectCD.NetCoreWebApi.WordRank
 
         Task<IEnumerable<string>> GetTopWordsAsync(int byTopRowWordMostUsed);
 
-        Task<IEnumerable<KeyValuePair<string, int>>> GetTopWordCountAsync(int byTopRowWordMostUsed)
+        Task<IEnumerable<KeyValuePair<string, int>>> GetTopWordCountAsync(int byTopRowWordMostUsed);
 
     }
 }
