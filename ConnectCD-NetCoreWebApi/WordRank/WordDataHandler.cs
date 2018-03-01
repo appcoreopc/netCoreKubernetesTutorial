@@ -2,7 +2,7 @@
 
 namespace ConnectCD.NetCoreWebApi.WordRank
 {
-    public class WordDataHandler
+    public class WordDataHandler : IInputWordHandler
     {
         private const string Spacer = " ";
         public async Task<string[]> GetWordsAsync(string stream)

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using ConnectCD.NetCoreWebApi.Models;
@@ -22,7 +23,7 @@ namespace ConnectCD.NetCoreWebApi.Controllers
         {
             _settings = appSettings?.Value;
             _logger = logger;
-        }           
+        }
 
         [HttpPost]
         public async Task<IActionResult> Index([FromBody] EventMessageModel model)
@@ -30,7 +31,7 @@ namespace ConnectCD.NetCoreWebApi.Controllers
             // Return challenge from slack if this is a challenge request 
             if (model?.Challenge != null)
             {
-                return Ok(model.Challenge);               
+                return Ok(model.Challenge);
             }
 
             // Otherwise do word count //
@@ -40,7 +41,7 @@ namespace ConnectCD.NetCoreWebApi.Controllers
             _logger.LogInformation($" Channel: {model?.Event?.Channel}");
             _logger.LogInformation($" Token : {model?.Token}");
             _logger.LogInformation($" TeamId : {model?.Team_Id}");
-            
+
             _logger.LogInformation(model?.Type);
             _logger.LogInformation($"Text message: {model?.Event?.Text}");
 
@@ -49,6 +50,13 @@ namespace ConnectCD.NetCoreWebApi.Controllers
 
             return Ok();
         }
+
+        [HttpGet]
+        public async Task<IActionResult> TopWords()
+        {            
+            var topWords = await new WordRanker(new WordDataHandler(), _logger).GetTopWordsAsync(10);
+            return Ok(topWords);
+        }               
 
     }
 }

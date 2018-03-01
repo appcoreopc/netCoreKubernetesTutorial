@@ -7,8 +7,7 @@ using System.Threading.Tasks;
 
 namespace ConnectCD.NetCoreWebApi.WordRank
 {
-
-    public class WordRanker
+    public class WordRanker : IRanker 
     {
         private static ConcurrentDictionary<string, int>
        _wordsWeUsed = new ConcurrentDictionary<string, int>();
@@ -52,12 +51,12 @@ namespace ConnectCD.NetCoreWebApi.WordRank
 
         public async Task<IEnumerable<string>> GetTopWordsAsync(int byTopRowWordMostUsed)
         {
-            return await Task.FromResult(_wordsWeUsed.OrderBy(x => x.Value).Take(byTopRowWordMostUsed)?.Select(x => x.Key));
+            return await Task.FromResult(_wordsWeUsed.OrderByDescending(x => x.Value).Take(byTopRowWordMostUsed)?.Select(x => x.Key));
         }
 
         public async Task<IEnumerable<KeyValuePair<string, int>>> GetTopWordCountAsync(int byTopRowWordMostUsed)
         {
-            return await Task.FromResult(_wordsWeUsed.OrderBy(x => x.Value)?.Take(byTopRowWordMostUsed));
+            return await Task.FromResult(_wordsWeUsed.OrderByDescending(x => x.Value)?.Take(byTopRowWordMostUsed));
         }
     }
 }
