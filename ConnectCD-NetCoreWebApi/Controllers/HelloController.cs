@@ -3,6 +3,7 @@ using ConnectCD.NetCoreWebApi.LogService;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Newtonsoft.Json;
 using System;
 
 namespace ConnectCD_NetCoreWebApi.Controllers
@@ -23,7 +24,7 @@ namespace ConnectCD_NetCoreWebApi.Controllers
         public IActionResult Index()
         {                      
             var messageToUsers = HelloWorldMessage + DateTime.Now.ToShortTimeString();
-            _logger.LogInformation(messageToUsers);            
+            _logger.LogInformation(JsonConvert.ToString(messageToUsers));            
             return Ok(messageToUsers);
         }
       

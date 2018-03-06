@@ -8,6 +8,14 @@
 # http://192.168.99.100:5050/hello/index
 
 
+# Pushing to repository
+# 
+# docker login 
+# 
+# docker tag dotnetapp-prod kepung/dotnetapp-prod
+# docker push kepung/dotnetapp-prod
+
+
 # To run it on KUBERNETES 
 # minikube start
 # minikube docker-env
@@ -34,8 +42,14 @@
 
 
 # Working on a real cluster - assuming that your config are in connect_config.txt file. 
-# kubectl --kubeconfig connect_config.txt expose deployment/connectcd 
-# --type="LoadBalancer" --port=5050 --name=connectcd-http
+# Run docker images on Kube cluster
+# kubectl --kubeconfig connect_config.txt run connectcd --image=kepung/dotnetapp-prod --port=5050 
+# Expose the port service 
+# kubectl --kubeconfig connect_config.txt expose deployment/connectcd --type="LoadBalancer" --port=5050 --name=connectcd-http
+
+
+# kubectl --kubeconfig connect_config.txt get services/connectcd-http -o wide or 
+# kubectl --kubeconfig connect_config.txt get services/connectcd-http -o yaml
 
 # you might get something like this. 
 
@@ -101,4 +115,4 @@ FROM microsoft/dotnet:2.0-runtime
 WORKDIR /app
 COPY --from=build-env /app/out ./
 
-ENTRYPOINT ["dotnet", "ConnectCD-NetCoreWebApi.dll"]
+ENTRYPOINT ["dotnet", "ConnectCD.NetCoreWebApi.dll"]

@@ -10,6 +10,7 @@ using ConnectCD_NetCoreWebApi.Controllers;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using ConnectCD.NetCoreWebApi.WordRank;
+using Newtonsoft.Json;
 
 namespace ConnectCD.NetCoreWebApi.Controllers
 {
@@ -37,14 +38,9 @@ namespace ConnectCD.NetCoreWebApi.Controllers
             // Otherwise do word count //
             await new WordRanker(new WordDataHandler(), _logger).Collect(model?.Event.Text);
 
-            _logger.LogInformation("OAuthController post trigged!");
-            _logger.LogInformation($" Channel: {model?.Event?.Channel}");
-            _logger.LogInformation($" Token : {model?.Token}");
-            _logger.LogInformation($" TeamId : {model?.Team_Id}");
-
-            _logger.LogInformation(model?.Type);
-            _logger.LogInformation($"Text message: {model?.Event?.Text}");
-
+            // logging information as json string //
+            _logger.LogInformation(JsonConvert.SerializeObject(model));          
+        
             // Return OK to acknowledge
             // message received //
 
